@@ -10,6 +10,8 @@
             return $('#Question').val().length != 0;
         }
     </script>
+    <script src="/js/jquery.switchButton.js"/>
+    <link rel="stylesheet" type="text/css" href="/i/jquery.switchButton.css"/>
 </xsl:template>
 
 <xsl:template match="content/question">
@@ -29,10 +31,20 @@
 
             <h3>Как вас зовут?</h3>
             <input id="Name" class="text" type="text" name="name" value="{$question/@name}" />
-            <p></p>
 
-            <h3 style="margin-top: 0">Ваш e-mail:</h3>
+            <h3>Ваш e-mail:</h3>
             <input id="Email" class="text" type="email" name="email" value="{$question/@email}" autocapitalize="off" />
+        
+            <h3 style="text-align: left;">
+                <label>
+                    <input type="checkbox" id="is_published" name="is_published" value="yes">
+                        <xsl:if test="@is_published = 1">
+                            <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                    </input>
+                    <xsl:text> Вопрос опубликован</xsl:text>
+                </label>
+            </h3>
 
             <div class="submit">
                 <input name="submit" id="Submit" type="submit" value="Сохранить" />
