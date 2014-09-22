@@ -41,8 +41,8 @@ sub list {
         order by            
             is_new desc,
             order_id desc,
-            score desc,
-            datetime desc
+            datetime desc,
+            score desc            
     ");
     $sth->execute($this->{session});
 

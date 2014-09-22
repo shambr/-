@@ -30,7 +30,8 @@ sub remove {
                 questions
             set
                 is_published = 0,
-                is_removed = 1
+                is_removed = 1,
+                is_new = 0
             where
                 id = ?
         ");

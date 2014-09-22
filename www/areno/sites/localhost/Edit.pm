@@ -75,7 +75,8 @@ sub update_question {
             tags = ?,
             name = ?,
             email = ?,
-            is_published = ?
+            is_published = ?,
+            is_new = 0
         where
             id = ?
     ");
