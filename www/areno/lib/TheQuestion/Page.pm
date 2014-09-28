@@ -8,7 +8,8 @@ sub session {
     my ($this) = @_;
 
     my ($id, $status) = (0, 'guest');
-    my $session = $this->cookie('session');
+    my $session = $this->cookie('usession');
+
     unless ($session) {
         for (0..20) {
             $session .= chr(int(rand(25) + 65));
@@ -39,7 +40,7 @@ sub session {
         status => $status,
     };
 
-    $this->set_header('Set-Cookie', "session=$session; Expires=Wed, 09 Jun 2021 10:18:14 GMT");
+    $this->set_header('Set-Cookie', "usession=$session; expires=Wed, 09 Jun 2021 10:18:14 GMT; path=/");
 }
 
 1;

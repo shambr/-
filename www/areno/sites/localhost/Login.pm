@@ -31,6 +31,9 @@ sub login {
     $this->manifestChild('username', {}, $username);
 
     if ($username && $password) {
+        my $field = 'username';
+        $field = 'email' if $username =~ /@/;
+
         my $sth = get_dbh()->prepare("
             select
                 id,
@@ -38,7 +41,7 @@ sub login {
             from
                 users
             where
-                username = ? and
+                $field = ? and
                 password = password(?)
         ");
         $sth->execute($username, $password);
@@ -49,7 +52,8 @@ sub login {
         }
         else {
             unless ($session) {
-                $session = `/usr/bin/uuid  -v3 ns:URL http://thequestion.ru/`;
+                my $r = rand();
+                my $session = `/usr/bin/uuid  -v3 ns:URL http://thequestion.ru/?r=$r`;
                 chomp $session;
                 $this->{session} = $session;
 
@@ -63,7 +67,8 @@ sub login {
                 ");
                 $sth->execute($session, $user_id);
             }
-            $this->set_header('Set-Cookie', "session=$session; Expires=Wed, 09 Jun 2021 10:18:14 GMT");
+
+            $this->set_header('Set-Cookie' => "usession=$session; expires=Wed, 09 Jun 2021 10:18:14 GMT; path=/");
 
             $this->set_header('Location' => "/all");
             $this->{areno}{http}{status} = 301;

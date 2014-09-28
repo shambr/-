@@ -75,6 +75,10 @@
                 </div>
                 <div class="answers">
                     <img src="/i/answers.svg"/>
+                    <xsl:text> </xsl:text>
+                    <a href="/admin/invite?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Пригласить ответить</a>
+                    <xsl:text> </xsl:text>
+                    <a href="/answers?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Ответы</a>
                 </div>
                 <div class="moderation buttons">
                     <img src="/i/remove.svg" onclick="remove_question({@id})"/>
