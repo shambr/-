@@ -56,21 +56,26 @@ sub get_answers {
         select
             id,
             text,
-            name
-        from    
+            name,
+            is_published
+        from
             answers
         where
-            question_id = ?
+            question_id = ? and
+            is_removed = 0
         order by
             id desc
     ");
     $sth->execute($id);
 
     my $answersNode = $this->contentChild('answers');
-    while (my ($id, $text, $name) = $sth->fetchrow_array()) {
+    while (my ($id, $text, $name, $is_published) = $sth->fetchrow_array()) {
+        $text =~ s{\n+}{<br />}g;
+
         $this->newItem($answersNode, {
             id => $id,
             name => $name,
+            is_published => $is_published,
         }, $text);
     }
 }

@@ -33,6 +33,21 @@
             $('#Answer').val('');
             $('#Tags').val('');
         }
+
+        function remove_answer(answer_id) {
+            if (!confirm('Удалить ответ?')) return;
+
+            $.ajax({
+                url: '/remove',
+                type: 'get',
+                data: {
+                    type: 'answer',
+                    id: answer_id
+                }
+            }).done(function() {
+                $('#card-' + answer_id).hide('slow');
+            });        
+        }
     </script>
 </xsl:template>
 
@@ -54,22 +69,36 @@
                 </div>            
             </div>
         </div>
+    </div>    
+</xsl:template>
+
+<xsl:template match="content/answers">
+    <div style="padding-bottom: 2em">
+        <xsl:apply-templates select="item"/>
     </div>
 </xsl:template>
 
-<xsl:template match="content/answers/item">
-    <div class="list">
+<xsl:template match="answers/item">
+    <div class="list" id="card-{@id}">
         <div class="questioncard">
+            <xsl:if test="@is_published = 0">
+                <xsl:attribute name="style">border: 2px dashed gray; margin-top: 0.5em</xsl:attribute>
+            </xsl:if>
             <div class="name">
                 <xsl:value-of select="@name"/>
             </div>
-            <div class="c{position() mod 8}">                
+            <div class="questionblock c{(position() + 1) mod 8}">                
                 <div class="text">
                     <xsl:if test="string-length(text()) &gt; 100">
                         <xsl:attribute name="class">text text1</xsl:attribute>
                     </xsl:if>
-                    <xsl:value-of select="text()"/>
+                    <xsl:value-of select="text()" disable-output-escaping="yes"/>
                 </div>            
+                <div class="moderation buttons">
+                    <img src="/i/remove.svg" onclick="remove_answer({@id})"/>
+                    <br />
+                    <img src="/i/edit.svg" onclick="document.location = '/editanswer?id={@id}'"/>
+                </div>
             </div>
         </div>
     </div>
