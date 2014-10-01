@@ -23,6 +23,10 @@ sub run {
     if ($id) {        
         $this->get_question($id);
         $this->get_answers($id);
+
+        if ($this->{user}{status} eq 'moderator') {
+            $this->get_users();
+        }
     }
 }
 

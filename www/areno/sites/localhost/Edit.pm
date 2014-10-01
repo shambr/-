@@ -82,7 +82,7 @@ sub update_question {
     ");
     $sth->execute($text, $tags, $name, $email, $is_published, $id);
 
-    my $url = $is_published ? '/all' : '/allhidden';
+    my $url = $is_published ? '/' : '/allhidden';
     $this->set_header('Location' => "$url#$id");
     $this->{areno}{http}{status} = 301;
 }

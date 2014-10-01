@@ -3,6 +3,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="layout.xslt"/>
+<xsl:include href="elements.xslt"/>
 
 <xsl:template name="head">
     <script>
@@ -48,6 +49,35 @@
                 $('#card-' + answer_id).hide('slow');
             });        
         }
+
+
+        var answerPosted = 0;
+
+        function postAnswer() {
+            return $('#Answer').val().length != 0;
+        }
+
+        function startTyping() {
+            if (answerPosted) {
+                $('#Message').fadeOut(1000);
+            }
+
+            answerPosted = 0;
+
+            if ($('#Answer').val().replace(/^[ \\n\\t]+/, '').replace(/[ \\n\\t]+\$/, '').length != 0) {
+                $('#Submit').addClass("enabled");
+                $('#Submit').removeClass("disabled");
+            }
+            else {
+                $('#Submit').addClass("disabled");
+                $('#Submit').removeClass("enabled");
+            }
+        }
+
+        function clear_form() {
+            $('#Answer').val('');
+            $('#Tags').val('');
+        }
     </script>
 </xsl:template>
 
@@ -76,6 +106,8 @@
     <div style="padding-bottom: 2em">
         <xsl:apply-templates select="item"/>
     </div>
+
+    <xsl:call-template name="answer-form"/>
 </xsl:template>
 
 <xsl:template match="answers/item">
@@ -101,6 +133,23 @@
                 </div>
             </div>
         </div>
+    </div>
+</xsl:template>
+
+<xsl:template name="answer-form">
+    <div class="whitecontent">
+        <form method="post" action="/postanswer" enctype="multipart/form-data" id="PostForm" onsubmit="return postAnswer();">
+            <input type="hidden" name="answer_to" value="{/page/content/question/@id}"/>
+
+            <xsl:call-template name="your-name"/>            
+
+            <h3 id="QLabel">Ваш ответ:</h3>
+            <textarea id="Answer" name="answer" placeholder="" onkeypress="startTyping();" onclick="startTyping();"></textarea>
+
+            <div class="submit">
+                <input name="submit" id="Submit" class="disabled" type="submit" value="Отправить ответ" />
+            </div>
+        </form>
     </div>
 </xsl:template>
 

@@ -19,6 +19,10 @@ sub run {
     $this->session();
 
     $this->contentTextChild('ask', '');
+
+    if ($this->{user}{status} eq 'moderator') {
+        $this->get_users();
+    }
 }
 
 

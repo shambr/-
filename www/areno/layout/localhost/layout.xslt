@@ -2,6 +2,10 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:variable name="user" select="/page/manifest/session"/>
+<xsl:variable name="path" select="/page/manifest/request/path/text()"/>
+<xsl:variable name="is_moderator" select="$user/@status = 'moderator'"/>
+
 <xsl:template match="/page">
     <html>
         <head>
@@ -16,8 +20,9 @@
             <xsl:call-template name="head"/>
         </head>
         <body>
-            <div class="content">
-                <xsl:call-template name="menu"/>
+            <xsl:call-template name="header"/>
+            <div class="content">                
+                <!--xsl:call-template name="menu"/-->
                 <h1>
                     <xsl:call-template name="title"/>
                 </h1>
@@ -31,6 +36,98 @@
 
 <xsl:template name="title">
     <xsl:text>theQuestion</xsl:text>
+</xsl:template>
+
+<xsl:template name="header">
+    <div class="header">
+        <xsl:choose>
+            <xsl:when test="$user/@status != 'user' and $user/@status != 'guest'">
+                <span class="name">
+                    <xsl:value-of select="$user/@firstname"/>
+                    <xsl:text> </xsl:text>
+                    <xsl:value-of select="$user/@lastname"/>
+                    <xsl:text> (</xsl:text>
+                    <xsl:value-of select="$user/@status"/>
+                    <xsl:text>)</xsl:text>
+                </span>
+
+                <span>
+                    <a href="/logout">Выход</a>
+                </span>
+            </xsl:when>
+            <xsl:otherwise>
+                <span>
+                    <xsl:choose>
+                        <xsl:when test="$path = '/login'">
+                            <xsl:text>Вход</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <a href="/login">Вход</a>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </span>
+            </xsl:otherwise>
+        </xsl:choose>
+            
+        <span>
+            <xsl:choose>
+                <xsl:when test="$path = '/'">
+                    <xsl:text>Вопросы</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <a href="/">Вопросы</a>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
+
+        <span>
+            <xsl:choose>
+                <xsl:when test="$path = '/ask'">
+                    <xsl:text>Спросить</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <a href="/ask">Спросить</a>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
+        
+        <xsl:if test="$is_moderator">
+            <!--span>
+                <xsl:choose>
+                    <xsl:when test="$path = '/all'">
+                        <xsl:text>Публичные</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="/all">Публичные</a>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </span-->
+
+            <span class="name">|</span>
+
+            <span>
+                <xsl:choose>
+                    <xsl:when test="$path = '/allhidden'">
+                        <xsl:text>Скрытые вопросы</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="/allhidden">Скрытые вопросы</a>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </span>
+
+            <span>
+                <xsl:choose>
+                    <xsl:when test="$path = '/admin/users'">
+                        <xsl:text>Пользователи</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="/admin/users">Пользователи</a>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </span>
+        </xsl:if>
+    </div>
 </xsl:template>
 
 <xsl:template name="menu">

@@ -25,6 +25,9 @@ sub run {
         if ($answer_to) {
             $this->save_answer($user_id, $answer_to);
         }
+
+        $this->set_header('Location' => "/answers?id=$answer_to");
+        $this->{areno}{http}{status} = 301;
     }
 }
 
@@ -67,15 +70,23 @@ sub save_answer {
 
     my ($name) = $this->param('name');
     my ($answer) = $this->param('answer');
+    my ($impersonate_id) = $this->param('impersonate_id') || 0;
+
+warn "name:[$name]";
+warn "user_id:[$user_id]";
+warn "impers:[$impersonate_id]";
+
+    $name = $this->get_name($impersonate_id || $user_id) unless $name;
+warn "newname:[$name]";
 
     my $sth = get_dbh->prepare("
         insert into
             answers
-            (datetime, ip, name, question_id, text, user_id)
+            (datetime, ip, name, question_id, text, user_id, impersonate_id)
         values
-            (now(), ?, ?, ?, ?, ?)
+            (now(), ?, ?, ?, ?, ?, ?)
     ");
-    $sth->execute($ip, $name, $answer_to, $answer, $user_id);
+    $sth->execute($ip, $name, $answer_to, $answer, $user_id, $impersonate_id);
 }
 
 

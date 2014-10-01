@@ -3,6 +3,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="layout.xslt"/>
+<xsl:include href="elements.xslt"/>
 
 <xsl:template name="head">
     <script>
@@ -51,8 +52,7 @@
             <h3>Теги, чтобы найти вопрос:</h3>
             <input id="Tags" class="text" type="text" name="tags" placeholder="" autocapitalize="off" />
 
-            <h3>Как вас зовут?</h3>
-            <input id="Name" class="text" type="text" name="name" placeholder="" value="{/page/manifest/request/cookies/item[@name = 'name']}" />
+            <xsl:call-template name="your-name"/>
 
             <p style="margin-top: 4em;">Мы&#160;найдем и&#160;опубликуем ответы на&#160;заданные вопросы. Оставьте, пожалуйста, свой e-mail; когда ответы будут готовы, мы&#160;напишем&#160;вам.</p>
             <h3 style="margin-top: 0">Ваш e-mail:</h3>
