@@ -94,6 +94,9 @@
                     <xsl:value-of select="text()"/>
                 </div>
                 <div class="answers">
+                    <xsl:value-of select="@tags"/>                    
+                </div>
+                <div class="answers">
                     <img src="/i/answers.svg"/>
                     <xsl:if test="$is_moderator">
                         <xsl:text> </xsl:text>
