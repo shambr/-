@@ -31,7 +31,8 @@ sub list {
             id,
             score,
             text,
-            name
+            name,
+            tags
         from
             questions
         where
@@ -48,7 +49,7 @@ sub list {
 
     my $colour = 0;
     my $listNode = $this->contentChild('list');
-    while (my ($id, $score, $text, $name) = $sth->fetchrow_array()) {
+    while (my ($id, $score, $text, $name, $tags) = $sth->fetchrow_array()) {
         next unless $text =~ /\S/;
 
         $text =~ s{^\s+}{};
@@ -62,7 +63,8 @@ sub list {
         $this->newItem($listNode, {
             id => $id,
             score => $score,
-            name => $name
+            name => $name,
+            tags => $tags,
         }, $text);
     }
 }
