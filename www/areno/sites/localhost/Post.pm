@@ -38,17 +38,12 @@ sub post {
     my $impersonate_id = $this->param('impersonate_id') || 0;
     my $user_id = $this->{user}{id} || 0;
 
-warn "name=[$name]";
-warn "email=[$email]";
-warn "[$user_id/$impersonate_id]";
-
     if ($impersonate_id) {
-        $name = get_name($impersonate_id);
+        $name = $this->get_name($impersonate_id);
     }
     elsif ($user_id) {
-        $name = get_name($user_id);
+        $name = $this->get_name($user_id);
     }
-warn "newname=[$name]";
 
     my $sth = get_dbh()->prepare("
         insert into
