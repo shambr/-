@@ -82,9 +82,42 @@ sub update_question {
     ");
     $sth->execute($text, $tags, $name, $email, $is_published, $id);
 
+    $this->make_top_question($id) if $is_published;
+
     my $url = $is_published ? '/' : '/allhidden';
     $this->set_header('Location' => "$url#$id");
     $this->{areno}{http}{status} = 301;
+}
+
+sub make_top_question {
+    my ($this, $id) = @_;
+
+    my $max_order_id = $this->get_max_order_id();
+
+    my $sth = get_dbh()->prepare("
+        update
+            questions
+        set
+            order_id = ?
+        where
+            id = ?
+    ");
+    $sth->execute($max_order_id + 1, $id);
+}
+
+sub get_max_order_id {
+    my ($this) = @_;
+
+    my $sth = get_dbh()->prepare("
+        select
+            max(order_id)
+        from
+            questions
+    ");
+    $sth->execute();
+    my ($max_order_id) = $sth->fetchrow_array();
+
+    return $max_order_id;
 }
 
 __PACKAGE__;
