@@ -65,7 +65,9 @@
             <input id="Name" class="text" type="text" name="name" placeholder="" value="{/page/manifest/known-name}" />
 
             <h3 id="QLabel">Ваш ответ:</h3>
-            <textarea id="Answer" name="answer" placeholder="" onkeypress="startTyping();" onclick="startTyping();"></textarea>
+            <textarea id="Answer" name="answer" placeholder="" onkeypress="startTyping();" onclick="startTyping();">
+                <xsl:value-of select="/page/content/saved-answer"/>
+            </textarea>
 
             <div class="submit">
                 <input name="submit" id="Submit" class="disabled" type="submit" value="Отправить ответ" />
@@ -73,6 +75,8 @@
         </form>
     </div>
 </xsl:template>
+
+<xsl:template match="content/saved-answer"/>
 
 <xsl:template name="title">Вопрос</xsl:template>
 <xsl:template name="menu">

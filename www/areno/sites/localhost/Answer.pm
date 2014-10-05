@@ -25,6 +25,7 @@ sub run {
 
         if ($user_id) {
             $this->get_question($id);
+            $this->get_answer($id, $user_id);
             $this->contentTextChild('answer', '');
         }
     }
@@ -51,6 +52,30 @@ sub get_question {
         datetime => $datetime,
         name => $name,
     }, $text);    
+}
+
+sub get_answer {
+    my ($this, $question_id, $user_id) = @_;
+
+    my $sth = get_dbh()->prepare("
+        select
+            text
+        from
+            answers
+        where
+            question_id = ? and
+            user_id = ? and
+            is_removed = 0
+        order by
+            id desc
+        limit
+            1
+    ");
+    $sth->execute($question_id, $user_id);
+
+    my ($text, $tags) = $sth->fetchrow_array();
+
+    $this->contentChild('saved-answer', {}, $text // '');
 }
 
 sub whoisit {

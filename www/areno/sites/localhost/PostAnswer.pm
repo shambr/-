@@ -72,12 +72,7 @@ sub save_answer {
     my ($answer) = $this->param('answer');
     my ($impersonate_id) = $this->param('impersonate_id') || 0;
 
-warn "name:[$name]";
-warn "user_id:[$user_id]";
-warn "impers:[$impersonate_id]";
-
     $name = $this->get_name($impersonate_id || $user_id) unless $name;
-warn "newname:[$name]";
 
     my $sth = get_dbh->prepare("
         insert into
