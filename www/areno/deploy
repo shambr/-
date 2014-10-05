@@ -1,0 +1,20 @@
+#!/bin/bash
+
+cp /www/dev.thequestion.ru/www/areno/layout/* -r /www/thequestion.ru/www/areno/layout/
+cp /www/dev.thequestion.ru/www/areno/sites/* -r /www/thequestion.ru/www/areno/sites/
+cp /www/dev.thequestion.ru/www/areno/lib/* -r /www/thequestion.ru/www/areno/lib/
+cp /www/dev.thequestion.ru/www/static/* -r /www/thequestion.ru/www/static/
+
+cp /www/dev.thequestion.ru/www/areno/layout/* -r /www/TheQuestion/www/areno/layout/
+cp /www/dev.thequestion.ru/www/areno/sites/* -r /www/TheQuestion/www/areno/sites/
+cp /www/dev.thequestion.ru/www/areno/lib/* -r /www/TheQuestion/www/areno/lib/
+cp /www/dev.thequestion.ru/www/static/* -r /www/TheQuestion/www/static/
+
+cd /www/TheQuestion
+git add *
+git commit -m"$1"
+git push
+
+cd /www/dev.thequestion.ru/www/areno
+
+
