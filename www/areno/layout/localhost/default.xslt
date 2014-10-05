@@ -105,9 +105,10 @@
                         <a href="/answers?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Ответы</a>
                     </xsl:if>
 
-                    <div class="buttons" id="buttons-{@id}">
-                        <img src="/i/vote_minus.svg" onclick="vote({@id}, 'm')"/>
-                        <img src="/i/vote_plus.svg" onclick="vote({@id}, 'p')"/>
+                    <div class="buttons" id="buttons-{@id}" style="cursor:default">
+                        <span style="position: relative; top: -1em; left: 0;">Проголосовать: </span>
+                        <img src="/i/vote_minus.svg" onclick="vote({@id}, 'm')" style="cursor:pointer"/>
+                        <img src="/i/vote_plus.svg" onclick="vote({@id}, 'p')" style="cursor:pointer"/>
                     </div>
                 </div>
 

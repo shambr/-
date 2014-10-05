@@ -54,6 +54,40 @@ sub post {
     ");
     $sth->execute($datetime, $ip, $name, $email, $question, $tags, $this->{session}, $user_id, $impersonate_id);
 
+    if ($this->{user}{status} eq 'moderator') {
+        $sth = get_dbh()->prepare("
+            select
+                max(id)
+            from
+                questions
+            where
+                session = ?
+        ");
+        $sth->execute($this->{session});
+        my ($posted_question_id) = $sth->fetchrow_array();
+
+        $sth = get_dbh()->prepare("
+            select
+                max(order_id)
+            from
+                questions
+        ");
+        $sth->execute();
+        my ($max_order_id) = $sth->fetchrow_array();
+
+        $sth = get_dbh()->prepare("
+            update
+                questions
+            set
+                order_id = ?,
+                is_published = 1,
+                is_new = 0
+            where
+                id = ?
+        ");
+        $sth->execute($max_order_id + 1, $posted_question_id);
+    }
+
     $this->set_header('Set-Cookie', "name=$name; Expires=Wed, 09 Jun 2021 10:18:14 GMT");
     $this->set_header('Set-Cookie', "email=$email; Expires=Wed, 09 Jun 2021 10:18:14 GMT");
 }

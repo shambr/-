@@ -103,7 +103,7 @@ div.questioncard div.text {
     font-size: 21pt;
     line-height: 28pt;
     text-align: center;
-    min-height: 210px;
+    min-height: 80px;
     padding: 0 24px 24px 24px;
     position: relative;
 }
@@ -126,6 +126,8 @@ div.questioncard div.answers {
     height: 44px;
     position: relative;
     padding-left: 1em;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12pt;
 }
 div.questioncard div.answers img {
     margin-top: 14px;            
@@ -134,6 +136,7 @@ div.questioncard div.moderation {
     position: absolute;
     top: 0;
     right: 0;
+    height: 100px;
 }
 
 p.subhead {
@@ -246,6 +249,27 @@ li {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+div.header {
+    background: #b5b0aa;
+    color: #f9f5ea;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 11pt;
+    padding: 0.4em 1em 0.5em 1em;
+}
+div.header span {
+    padding: 0 1em;
+}
+div.header span.name {
+    color: #3e3e3d;
+}
+div.header a,
+div.header a:visited {
+    color: #3e3e3d;
+}
+div.header a:hover {
+    color: #a70404;
 }
 
 @media (min-width:320px) { /* smartphones, iPhone, portrait 480x320 phones */ }
