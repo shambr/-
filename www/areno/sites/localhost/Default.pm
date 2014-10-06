@@ -82,7 +82,8 @@ sub count_answers {
         from
             answers
         where
-            is_published = 1
+            is_published = 1 and
+            is_removed = 0
         group by 
             question_id
     ");
