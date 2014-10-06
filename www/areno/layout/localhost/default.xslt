@@ -102,7 +102,17 @@
                         <xsl:text> </xsl:text>
                         <a href="/admin/invite?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Пригласить ответить</a>
                         <xsl:text> </xsl:text>
-                        <a href="/answers?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Ответы</a>
+                        <a href="/answers?id={@id}" style="color: black; font-family: Arial; font-size: 80%">                            
+                            <xsl:variable name="answers-info" select="/page/content/answers-info/item[@question_id = current()/@id]"/>
+                            <xsl:choose>
+                                <xsl:when test="$answers-info">
+                                    <xsl:value-of select="$answers-info/@count"/>
+                                    <xsl:text> </xsl:text>
+                                    <xsl:value-of select="$answers-info/@label"/>
+                                </xsl:when>
+                                <xsl:otherwise>Нет ответов</xsl:otherwise>
+                            </xsl:choose>
+                        </a>
                     </xsl:if>
 
                     <div class="buttons" id="buttons-{@id}" style="cursor:default">

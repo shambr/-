@@ -3,7 +3,9 @@ package Areno::Localhost::Default;
 use strict;
 use base 'TheQuestion::Page';
 
+use utf8;
 use Datasource;
+use Lingua::RU::Numeric::Declension;
 
 sub route {
     '/'
@@ -19,6 +21,7 @@ sub run {
     $this->session();
     
     $this->list();
+    $this->count_answers();
 }
 
 sub list {
@@ -66,6 +69,32 @@ sub list {
             name => $name,
             tags => $tags,
         }, $text);
+    }
+}
+
+sub count_answers {
+    my ($this) = @_;
+
+    my $sth = get_dbh()->prepare("
+        select
+            question_id,
+            count(*)
+        from
+            answers
+        where
+            is_published = 1
+        group by 
+            question_id
+    ");
+    $sth->execute();
+
+    my $answersinfoNode = $this->contentChild('answers-info');
+    while (my ($question_id, $count) = $sth->fetchrow_array()) {
+        $this->newItem($answersinfoNode, {
+            question_id => $question_id,
+            count => $count,
+            label => Lingua::RU::Numeric::Declension::numdecl($count, 'ответ', 'ответа', 'ответов'),
+        });
     }
 }
 
