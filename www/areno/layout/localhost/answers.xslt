@@ -138,7 +138,7 @@
 
 <xsl:template name="answer-form">
     <div class="whitecontent">
-        <form method="post" action="/postanswer" enctype="multipart/form-data" id="PostForm" onsubmit="return postAnswer();">
+        <form method="post" action="/postanswer" id="PostForm" onsubmit="return postAnswer();">
             <input type="hidden" name="answer_to" value="{/page/content/question/@id}"/>
 
             <xsl:call-template name="your-name"/>            
