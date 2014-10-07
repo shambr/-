@@ -20,6 +20,8 @@ sub run {
 
     my ($user_id, $name) = $this->whoisit();
 
+    $user_id ||= $this->{user}{id};
+
     if ($user_id) {
         my ($answer_to) = $this->param('answer_to') =~ /^(\d+)$/a;
         if ($answer_to) {
