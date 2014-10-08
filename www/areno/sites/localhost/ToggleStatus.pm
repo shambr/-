@@ -42,6 +42,27 @@ sub toggle_qstatus {
             id = ?
     ");
     $sth->execute($value, $id);
+
+    if ($value == 1) {
+        $sth = get_dbh()->prepare("
+            select
+                max(order_id)
+            from
+                questions
+        ");
+        $sth->execute();
+        my ($max_order_id) = $sth->fetchrow_array();
+
+        $sth = get_dbh()->prepare("
+            update
+                questions
+            set
+                order_id = ?
+            where
+                id = ?
+        ");
+        $sth->execute($max_order_id + 1, $id);
+    }
 }
 
 __PACKAGE__;

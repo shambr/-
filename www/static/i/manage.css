@@ -142,12 +142,24 @@ div.actions label {
 div.tags {
     margin: 1em 0 1em 0;
 }
-div.tags span {
+div.tags a {
     margin-right: 0.5em;
-    padding: 0.4em;
+    padding: 0.4em 0.4em 0.3em 0.4em;
     text-transform: uppercase;
     font-style: 11px;
     background: #73736e;
     border-radius: 3px;
     color: #dcd7d2;
+    text-decoration: none;
+}
+span.clear-field {
+    position: relative;
+    top: 0;
+    left: -2em;
+    z-index: 4;
+    color: #b4afa9;
+    cursor: pointer;
+}
+span.clear-field:hover {
+    color: red;
 }

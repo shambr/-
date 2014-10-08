@@ -49,14 +49,25 @@ sub list {
     elsif ($filter1 eq 'interesting') {
         $filter1_sql = 'is_interesting = 1 and is_removed = 0';
     }
+    elsif ($filter1 eq 'answered') {
+        my $ids = $this->get_answered_ids();
+        $filter1_sql = 'is_removed = 0';
+        $filter1_sql .= " and id in ($ids)" if $ids;
+    }    
+    elsif ($filter1 eq 'notanswered') {
+        my $ids = $this->get_answered_ids();
+        $filter1_sql = 'is_removed = 0';
+        $filter1_sql .= " and id not in ($ids)" if $ids;
+    }    
 
     my $filter2_sql = '1';
     $filter2 =~ s{^\s+}{};
     $filter2 =~ s{\s+$}{};
     $filter2 =~ s{  +}{ }g;
     if ($filter2 ne '') {
-        my $match = get_dbh()->quote($filter2);
-        $filter2_sql = "match(text) against($match)";
+        my $match = get_dbh()->quote("%$filter2%");
+        #$filter2_sql = "match(text) against($match)";
+        $filter2_sql = "text like $match";
     }
 
     my $filter3_sql = '1';
@@ -64,13 +75,14 @@ sub list {
     $filter3 =~ s{\s+$}{};
     $filter3 =~ s{  +}{ }g;
     if ($filter3) {
-        my $match = get_dbh()->quote($filter3);
-        $filter3_sql = "match(tags) against($match)";
+        my $match = get_dbh()->quote("%$filter3%");
+        #$filter3_sql = "match(tags) against($match)";
+        $filter3_sql = "tags like $match";
     }
 
     my $dbh = get_dbh();
 
-    my $sth = $dbh->prepare("
+    my $sql = "
         select
             id,
             datetime,
@@ -87,13 +99,16 @@ sub list {
             ($filter1_sql) and
             ($filter2_sql) and
             ($filter3_sql)
-        order by            
+        order by  
             is_new desc,
             order_id desc,
             datetime desc,
-            score desc            
-    ");
+            score desc
+    ";
 
+    warn $sql;
+
+    my $sth = $dbh->prepare($sql);
     $sth->execute();
 
     my $colour = 0;
@@ -158,6 +173,28 @@ sub count_answers {
             label => Lingua::RU::Numeric::Declension::numdecl($count, 'ответ', 'ответа', 'ответов'),
         });
     }
+}
+
+sub get_answered_ids {
+    my ($this) = @_;
+
+    my $sth = get_dbh()->prepare("
+        select
+            distinct question_id
+        from
+            answers
+        where
+            is_published = 1 and
+            is_removed = 0
+    ");
+    $sth->execute();
+
+    my @ids;
+    while (my ($id) = $sth->fetchrow_array()) {
+        push @ids, $id;
+    }
+
+    return join ',', @ids;
 }
 
 __PACKAGE__;

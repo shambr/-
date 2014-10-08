@@ -87,6 +87,10 @@
                 toggle_qstatus(question_id, status);
             }
         }
+
+        function reload_filter() {
+            $('#filterform').submit();
+        }
     </script>
 </xsl:template>
 
@@ -150,7 +154,13 @@
                     <xsl:text>Удаленные</xsl:text>
                 </option>
             </select>
-            <input type="text" name="filter2" placeholder="Поиск по тексту" value="{/page/manifest/request/arguments/item[@name = 'filter2']}"/>
+            <input type="text" name="filter2" id="filter2" placeholder="Поиск по тексту" value="{/page/manifest/request/arguments/item[@name = 'filter2']}"/>
+            <span class="clear-field" onclick="$('#filter2').val(''); reload_filter();">×</span>
+
+            <input type="text" name="filter3" id="filter3" placeholder="Поиск по тегам" value="{/page/manifest/request/arguments/item[@name = 'filter3']}"/>
+            <span class="clear-field" onclick="$('#filter3').val(''); reload_filter();">×</span>
+
+            <input type="submit" value="" style="visibility: hidden"/>
         </form>
         <div class="filter-count">
             <xsl:value-of select="count(list/item)"/>
@@ -198,9 +208,9 @@
                 <xsl:if test="item">
                     <div class="tags">
                         <xsl:for-each select="item">
-                            <span>
+                            <a href="?filter1={/page/manifest/request/arguments/item[@name = 'filter1']/text()}&amp;filter2={/page/manifest/request/arguments/item[@name = 'filter2']/text()}&amp;filter3={text()}">
                                 <xsl:value-of select="text()"/>
-                            </span>
+                            </a>
                         </xsl:for-each>
                     </div>
                 </xsl:if>
@@ -253,10 +263,10 @@
         </td>
 
         <td>
-            <xsl:variable name="answers-info" select="/page/content/answers-info/item[@question_id]"/>
+            <xsl:variable name="answers-info" select="/page/content/answers-info/item[@question_id = current()/@id]"/>
             <xsl:choose>
                 <xsl:when test="$answers-info">
-                    <xsl:value-of select="$answers-info"/>
+                    <xsl:value-of select="$answers-info/@count"/>
                 </xsl:when>
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
