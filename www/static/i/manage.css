@@ -55,7 +55,10 @@ div.header a:visited {
 div.header a:hover {
     color: #a70404;
 }
-
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 div.content {
     padding: 2em 16px;
 }
@@ -88,4 +91,45 @@ div.filter-count {
     float: left;
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 16pt;
+}
+
+td,
+th {
+    vertical-align: top;
+}
+table.questions th {
+    font-family: 'PT Sans', sans-serif;
+    background: #dcd7d2;
+    font-style: italic;
+    font-size: 13px;
+    color: #73736e;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: top;
+    padding: 0.3em 1em;
+}
+table.questions td {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13px;
+    padding: 0.3em 1em;
+    background: #fffaef;
+    border-bottom: 3px solid #dcd7d1;
+}
+table.questions tr.info td {
+    border-bottom: 7px solid #dcd7d1;
+}
+table.questions td.info {
+    border-bottom: 7px solid #dcd7d1;
+}
+table.questions tr:hover div.actions {
+    visibility: visible;
+}
+div.actions {
+    color: #b4afa9;
+    visibility: hidden;
+}
+div.actions span {
+    border-bottom: 1px dashed #b4afa9;
+    margin-right: 1em;
+    cursor: pointer;
 }

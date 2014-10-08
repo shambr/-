@@ -104,93 +104,90 @@
 </xsl:template>
 
 <xsl:template match="content/list">
-    <div class="list">
-        <ul id="sortable">
+    <table class="questions">
+        <thead>
+            <tr>
+                <th>Вопрос</th>
+                <th>Дата и время</th>
+                <th>Статус вопроса</th>
+                <th>Рейтинг</th>
+                <th>Ответов</th>
+                <th>Статус ответа</th>
+                <th>Время</th>
+                <th>Ответственный</th>
+            </tr>
+        </thead>
+        <tbody>
             <xsl:apply-templates select="item"/>
-        </ul>
-    </div>
-
-    <xsl:if test="$is_moderator">
-        <script>
-            $("#sortable").sortable({
-                beforeStop: function() {
-                    var questions = $('div.questioncard');
-                    var ids = '';
-                    for (var c = 0; c != questions.length; c++) {
-                        ids += questions[c].id + ',';
-                    }
-                    ids = ids.replace(/card-/g, '');
-                    ids = ids.replace(/,$/, '');
-                    
-                    $.ajax({
-                        url: '/sort',
-                        type: 'get',
-                        data: {
-                            ids: ids
-                        }
-                    });
-                }
-            });    
-        </script>
-    </xsl:if>
+        </tbody>
+    </table>
 </xsl:template>
 
 <xsl:template match="content/list/item">
-    <li>
-        <a name="{@id}"/>
-        <div class="questioncard" id="card-{@id}">
-            <div class="name">
+    <tr>
+        <td rowspan="2" class="info" style="width: 40%">
+            <div>
                 <xsl:value-of select="@name"/>
             </div>
-            <div class="questionblock c{position() mod 8}">
-                <div class="score" id="score-{@id}">
-                    <xsl:value-of select="@score"/>
-                </div>
-                <div class="text">
-                    <xsl:if test="string-length(text()) &gt; 100">
-                        <xsl:attribute name="class">text text1</xsl:attribute>
-                    </xsl:if>
-                    <xsl:value-of select="text()"/>
-                </div>
-                <div class="answers">
-                    <xsl:value-of select="@tags"/>                    
-                </div>
-                <div class="answers">
-                    <img src="/i/answers.svg"/>
-                    <xsl:if test="$is_moderator">
-                        <xsl:text> </xsl:text>
-                        <a href="/admin/invite?id={@id}" style="color: black; font-family: Arial; font-size: 80%">Пригласить ответить</a>
-                        <xsl:text> </xsl:text>
-                        <a href="/answers?id={@id}" style="color: black; font-family: Arial; font-size: 80%">                            
-                            <xsl:variable name="answers-info" select="/page/content/answers-info/item[@question_id = current()/@id]"/>
-                            <xsl:choose>
-                                <xsl:when test="$answers-info">
-                                    <xsl:value-of select="$answers-info/@count"/>
-                                    <xsl:text> </xsl:text>
-                                    <xsl:value-of select="$answers-info/@label"/>
-                                </xsl:when>
-                                <xsl:otherwise>Нет ответов</xsl:otherwise>
-                            </xsl:choose>
-                        </a>
-                    </xsl:if>
-
-                    <div class="buttons" id="buttons-{@id}" style="cursor:default">
-                        <span style="position: relative; top: -1em; left: 0;">Проголосовать: </span>
-                        <img src="/i/vote_minus.svg" onclick="vote({@id}, 'm')" style="cursor:pointer"/>
-                        <img src="/i/vote_plus.svg" onclick="vote({@id}, 'p')" style="cursor:pointer"/>
-                    </div>
-                </div>
-
-                <xsl:if test="$is_moderator">
-                    <div class="moderation buttons">
-                        <img src="/i/remove.svg" onclick="remove_question({@id})"/>
-                        <br />
-                        <img src="/i/edit.svg" onclick="document.location = '/edit?id={@id}'"/>
-                    </div>
-                </xsl:if>
+            <div>
+                <xsl:value-of select="text()"/>
             </div>
-        </div>
-    </li>
+        </td>
+        <td>
+            <nobr>
+                <xsl:value-of select="@datetime"/>
+            </nobr>
+        </td>
+        <td>
+            <ul>
+                <xsl:choose>
+                    <xsl:when test="@is_removed = 0">
+                        <xsl:choose>
+                            <xsl:when test="@is_published">
+                                <li>Опубликован</li>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <li>Не опубликован</li>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <li>Удален</li>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ul>
+        </td>
+        <td>
+            <xsl:value-of select="@score"/>
+        </td>
+
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td rowspan="2" style="width: 1px;" class="info">
+        </td>
+    </tr>
+    <tr class="info">
+        <td colspan="4">
+            <div class="actions">
+                <span>Ответить</span>
+                <span>Найти эксперта</span>
+                <span>Редактировать</span>
+                <span>Удалить</span>
+            </div>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
 </xsl:template>
 
 </xsl:stylesheet>

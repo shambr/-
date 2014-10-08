@@ -51,10 +51,13 @@ sub list {
     my $sth = $dbh->prepare("
         select
             id,
+            datetime,
             score,
             text,
             name,
-            tags
+            tags,
+            is_published,
+            is_removed
         from
             questions
         where
@@ -69,7 +72,7 @@ sub list {
 
     my $colour = 0;
     my $listNode = $this->contentChild('list');
-    while (my ($id, $score, $text, $name, $tags) = $sth->fetchrow_array()) {
+    while (my ($id, $datetime, $score, $text, $name, $tags, $is_published, $is_removed) = $sth->fetchrow_array()) {
         next unless $text =~ /\S/;
 
         $text =~ s{^\s+}{};
@@ -80,11 +83,15 @@ sub list {
         $name =~ s{\s+$}{};
         $name =~ s{ \s+}{ }g;
 
+        $datetime =~ s{:00$}{};
         $this->newItem($listNode, {
             id => $id,
-            score => $score,
+            datetime => $datetime,
+            score => $score ? sprintf("%+i", $score) : 0,
             name => $name,
             tags => $tags,
+            is_published => $is_published,
+            is_removed => $is_removed,
         }, $text);
     }
 }
