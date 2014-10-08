@@ -23,6 +23,70 @@
                 $('#card-' + question_id).hide('slow');
             });        
         }
+
+        function remove_question(question_id) {
+            if (!confirm('Удалить вопрос?')) return;
+
+            $.ajax({
+                url: '/remove',
+                type: 'get',
+                data: {
+                    id: question_id
+                }
+            }).done(function() {
+                $('#card-' + question_id).hide('slow');
+                $('#card2-' + question_id).hide('slow');
+            });    
+        }
+
+        function toggle_interesting(question_id, value) {
+            value = value ? 1 : 0;
+
+            $.ajax({
+                url: '/toggle_interesting',
+                type: 'get',
+                data: {
+                    id: question_id,
+                    v: value
+                }
+            }).done(function() {
+                $('#text-' + question_id).animate({
+                    color: (value ? "#3bdf6a" : "#e44d4d")
+                }, 500).animate({
+                    color: "#313131"
+                }, 1000);
+            });
+        }
+
+        function toggle_qstatus(question_id, status) {
+            status = status == 'published' ? 1 : 0;
+
+            $.ajax({
+                url: '/toggle_qstatus',
+                type: 'get',
+                data: {
+                    id: question_id,
+                    v: status
+                }
+            }).done(function() {
+                $('#text-' + question_id).animate({
+                    color: (status ? "#3bdf6a" : "#e44d4d")
+                }, 500).animate({
+                    color: "#313131"
+                }, 1000);
+            });
+        }
+
+        function change_question_status(question_id) {
+            var status = $('#qstatus-' + question_id).val();
+
+            if (status == 'removed') {
+                remove_question(question_id);
+            }
+            else {
+                toggle_qstatus(question_id, status);
+            }
+        }
     </script>
 </xsl:template>
 
@@ -86,7 +150,7 @@
                     <xsl:text>Удаленные</xsl:text>
                 </option>
             </select>
-            <input type="text" name="filter2"/>
+            <input type="text" name="filter2" placeholder="Поиск по тексту" value="{/page/manifest/request/arguments/item[@name = 'filter2']}"/>
         </form>
         <div class="filter-count">
             <xsl:value-of select="count(list/item)"/>
@@ -124,13 +188,37 @@
 </xsl:template>
 
 <xsl:template match="content/list/item">
-    <tr>
+    <tr id="card-{@id}">
         <td rowspan="2" class="info" style="width: 40%">
             <div>
                 <xsl:value-of select="@name"/>
             </div>
-            <div>
-                <xsl:value-of select="text()"/>
+            <div id="text-{@id}">
+                <xsl:value-of select="@text"/>
+                <xsl:if test="item">
+                    <div class="tags">
+                        <xsl:for-each select="item">
+                            <span>
+                                <xsl:value-of select="text()"/>
+                            </span>
+                        </xsl:for-each>
+                    </div>
+                </xsl:if>
+            </div>
+            <div class="actions">
+                <label>
+                    <input type="checkbox" onchange="toggle_interesting({@id}, this.checked)">
+                        <xsl:if test="@is_interesting = 1">
+                            <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                    </input>
+                    <xsl:text> Интересный</xsl:text>
+                </label>
+
+                <span>Ответить</span>
+                <span>Найти эксперта</span>
+                <span>Редактировать</span>
+                <span onclick="remove_question({@id})">Удалить</span>                
             </div>
         </td>
         <td>
@@ -139,29 +227,39 @@
             </nobr>
         </td>
         <td>
-            <ul>
-                <xsl:choose>
-                    <xsl:when test="@is_removed = 0">
-                        <xsl:choose>
-                            <xsl:when test="@is_published">
-                                <li>Опубликован</li>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <li>Не опубликован</li>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <li>Удален</li>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </ul>
+            <select id="qstatus-{@id}" onchange="change_question_status('{@id}')">
+                <option value="published">
+                    <xsl:if test="@is_published = 1 and @is_removed = 0">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:text>Опубликован</xsl:text>
+                </option>
+                <option value="hidden">
+                    <xsl:if test="@is_published = 0 and @is_removed = 0">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:text>Скрыт</xsl:text>
+                </option>
+                <option value="removed">
+                    <xsl:if test="@is_removed = 1">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:text>Удален</xsl:text>
+                </option>
+            </select>
         </td>
         <td>
             <xsl:value-of select="@score"/>
         </td>
 
         <td>
+            <xsl:variable name="answers-info" select="/page/content/answers-info/item[@question_id]"/>
+            <xsl:choose>
+                <xsl:when test="$answers-info">
+                    <xsl:value-of select="$answers-info"/>
+                </xsl:when>
+                <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
         </td>
         <td>
         </td>
@@ -172,14 +270,8 @@
         <td rowspan="2" style="width: 1px;" class="info">
         </td>
     </tr>
-    <tr class="info">
+    <tr class="info" id="card2-{@id}">
         <td colspan="4">
-            <div class="actions">
-                <span>Ответить</span>
-                <span>Найти эксперта</span>
-                <span>Редактировать</span>
-                <span>Удалить</span>
-            </div>
         </td>
         <td>
         </td>

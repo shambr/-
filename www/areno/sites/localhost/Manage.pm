@@ -31,6 +31,7 @@ sub list {
 
     my $filter1 = $this->param('filter1') // 'all';
     my $filter2 = $this->param('filter2') // '';
+    my $filter3 = $this->param('filter3') // '';
 
     my $filter1_sql = '1';
     if ($filter1 eq 'all') { 
@@ -45,6 +46,27 @@ sub list {
     elsif ($filter1 eq 'removed') {
         $filter1_sql = 'is_removed = 1';
     }
+    elsif ($filter1 eq 'interesting') {
+        $filter1_sql = 'is_interesting = 1 and is_removed = 0';
+    }
+
+    my $filter2_sql = '1';
+    $filter2 =~ s{^\s+}{};
+    $filter2 =~ s{\s+$}{};
+    $filter2 =~ s{  +}{ }g;
+    if ($filter2 ne '') {
+        my $match = get_dbh()->quote($filter2);
+        $filter2_sql = "match(text) against($match)";
+    }
+
+    my $filter3_sql = '1';
+    $filter3 =~ s{^\s+}{};
+    $filter3 =~ s{\s+$}{};
+    $filter3 =~ s{  +}{ }g;
+    if ($filter3) {
+        my $match = get_dbh()->quote($filter3);
+        $filter3_sql = "match(tags) against($match)";
+    }
 
     my $dbh = get_dbh();
 
@@ -57,22 +79,26 @@ sub list {
             name,
             tags,
             is_published,
-            is_removed
+            is_removed,
+            is_interesting
         from
             questions
         where
-            $filter1_sql
+            ($filter1_sql) and
+            ($filter2_sql) and
+            ($filter3_sql)
         order by            
             is_new desc,
             order_id desc,
             datetime desc,
             score desc            
     ");
+
     $sth->execute();
 
     my $colour = 0;
     my $listNode = $this->contentChild('list');
-    while (my ($id, $datetime, $score, $text, $name, $tags, $is_published, $is_removed) = $sth->fetchrow_array()) {
+    while (my ($id, $datetime, $score, $text, $name, $tags, $is_published, $is_removed, $is_interesting) = $sth->fetchrow_array()) {
         next unless $text =~ /\S/;
 
         $text =~ s{^\s+}{};
@@ -84,7 +110,7 @@ sub list {
         $name =~ s{ \s+}{ }g;
 
         $datetime =~ s{:00$}{};
-        $this->newItem($listNode, {
+        my $questionNode = $this->newItem($listNode, {
             id => $id,
             datetime => $datetime,
             score => $score ? sprintf("%+i", $score) : 0,
@@ -92,7 +118,18 @@ sub list {
             tags => $tags,
             is_published => $is_published,
             is_removed => $is_removed,
-        }, $text);
+            is_interesting => $is_interesting,
+            text => $text,
+        });
+
+        for my $tag (split /, */, $tags) {
+            $tag =~ s{^ +}{};
+            $tag =~ s{ +$}{};
+            $tag =~ s{ +}{ };
+
+            $this->newItem($questionNode, {
+            }, $tag) if $tag =~ /\S/;
+        }
     }
 }
 

@@ -97,6 +97,9 @@ td,
 th {
     vertical-align: top;
 }
+table.questions {
+    margin: 1em 0;
+}
 table.questions th {
     font-family: 'PT Sans', sans-serif;
     background: #dcd7d2;
@@ -111,7 +114,7 @@ table.questions th {
 table.questions td {
     font-family: 'PT Sans', sans-serif;
     font-size: 13px;
-    padding: 0.3em 1em;
+    padding: 1em 1em;
     background: #fffaef;
     border-bottom: 3px solid #dcd7d1;
 }
@@ -132,4 +135,19 @@ div.actions span {
     border-bottom: 1px dashed #b4afa9;
     margin-right: 1em;
     cursor: pointer;
+}
+div.actions label {
+    margin-right: 1em;
+}
+div.tags {
+    margin: 1em 0 1em 0;
+}
+div.tags span {
+    margin-right: 0.5em;
+    padding: 0.4em;
+    text-transform: uppercase;
+    font-style: 11px;
+    background: #73736e;
+    border-radius: 3px;
+    color: #dcd7d2;
 }
