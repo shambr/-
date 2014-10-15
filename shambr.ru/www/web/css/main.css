@@ -1,0 +1,328 @@
+body {
+    background: #dcd7d2;
+    padding: 0;
+    margin: 0;
+}
+div.content {
+    width: 896px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 120px;
+    margin-bottom: 120px;
+}
+div.feature {
+    width: 896px;
+    height: 320px;
+    border: 1px solid red;
+}
+p.reader {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+}
+h4 {
+    font-family: 'Futura-PT', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: 50%;    
+    margin: 16px 0 0 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+div.sep {
+    clear: both;
+    height: 16px;
+}
+div.hisep {
+    clear: both;
+    height: 96px;
+}
+div.logo {
+    height: 160px;
+    text-align: center;
+    padding-top: 96px;    
+}
+div.logo img {
+    width: 272px;
+    height: 64px;
+}
+h2 {
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-weight: normal;
+    font-size: 26px;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+}
+table {
+    border-spacing: none;
+    border-collapse: collapse;
+}
+td {
+    vertical-align: top;
+    padding: 0;
+}
+
+ul.previews {
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+ul.previews li {
+    float: left;
+    width: 288px;
+    margin: 32px 16px 32px 0;
+    padding: 0;
+}
+ul.previews li.last {
+    margin-right: 0;
+}
+ul.previews img {
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin-right: 16px;
+}
+ul.previews div.author p {
+    padding: 0;
+    margin: 0;
+}
+ul.previews div.author p.name {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+}
+ul.previews div.author p.title {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 18px;
+}
+ul.previews div.bubblehand {
+    height: 16px;
+}
+ul.previews div.bubblehand img {
+    height: 16px;
+}
+ul.previews div.text {
+    background: white;
+    border-radius: 3px;
+    width: 288px;
+    height: 288px;    
+}
+ul.previews h2 {
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-size: 28px;
+    line-height: 36px;
+    padding: 16px;
+    font-weight: normal;
+}
+ul.previews div.text a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    height: 288px;   
+}
+
+ul.widepreviews {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul.widepreviews li {
+    width: 896px;
+    margin: 32px 16px 32px 0;
+    padding: 0;
+}
+ul.widepreviews li.last {
+    margin-right: 0;
+}
+ul.widepreviews img {
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin-right: 16px;
+}
+ul.widepreviews div.author p {
+    padding: 0;
+    margin: 0;
+}
+ul.widepreviews div.author p.name {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+}
+ul.widepreviews div.author p.title {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 18px;
+}
+ul.widepreviews div.bubblehand {
+    height: 16px;
+}
+ul.widepreviews div.bubblehand img {
+    height: 16px;
+}
+ul.widepreviews div.text {
+    background: white;
+    border-radius: 3px;
+    width: 896px;
+    height: 288px;    
+}
+ul.widepreviews h2 {
+    font-family: 'Futura-PT', sans-serif;
+    font-weight: normal;
+    font-size: 64px;
+    line-height: 64px;
+    padding: 16px;
+    letter-spacing: -5%;
+    text-align: center;
+}
+ul.widepreviews div.text a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    height: 288px;   
+}
+
+
+div.answercontent {
+    width: 896px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+div.answercontent div.head {
+    margin-bottom: 96px;
+}
+div.answercontent div.author img {
+    width: 48px;
+    height: 48px;
+    float: left;
+    margin-right: 16px;
+}
+div.answercontent div.author p {
+    padding: 0;
+    margin: 0;
+}
+div.answercontent div.author p.name {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    padding-top: 6px;
+}
+div.answercontent div.author p.title {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 18px;
+}
+div.answercontent h1 {
+    font-family: 'Futura-PT', sans-serif;
+    font-weight: normal;
+    font-size: 64pt;
+    line-height: 64pt;
+    letter-spacing: -5%;
+}
+div.answercontent div.answers {
+    background: white;
+    border-radius: 3px;
+    margin-top: 16px;
+    padding: 64px 0 0 0;
+}
+div.answercontent div.answers td.person {
+    width: 288px;
+    text-align: center;
+    padding-bottom: 96px;
+}
+div.answercontent div.answers td.body {
+    padding-right: 64px;
+    padding-bottom: 96px;
+}
+div.answercontent div.answers td.person img {
+    height: 96px;
+    width: 96px;
+}
+div.answercontent div.answers td.person p.namec {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    padding-top: 6px;
+    text-align: center;
+    margin: 0;
+}
+div.answercontent div.answers td.person p.titlec {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    margin: 0;
+}
+div.answercontent div.answers div.date {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 18px;
+    color: gray;
+}
+div.answercontent div.answers p {
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 30px;
+}
+
+div.subscribe {
+    background: #166082;
+    color: white;
+}
+div.subscribe h3 {
+    text-align: center;
+    font-family: 'Futura-PT', sans-serif;
+    font-size: 96px;
+    line-height: 80px;
+    font-weight: normal;
+    letter-spacing: 50%;
+    text-transform: uppercase;
+    width: 896px;
+    margin: auto;
+    padding: 96px 0;
+}
+div.subscribe p {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 13pt;
+    line-height: 18pt;
+    text-align: center;
+    width: 280px;
+    margin: auto;
+}
+div.subscribe form {
+    padding: 0;
+    width: 580px;
+    margin: 64px auto 260px auto;
+}
+div.subscribe input#email {
+    width: 280px;
+    margin-right: 16px;
+    height: 48px;
+    border: none;
+}
+div.subscribe button#submit {
+    width: 280px;
+    font-family: 'Futura-PT', sans-serif;
+    font-size: 22px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: 50%;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #166082;
+    color: white;
+    border: 7px solid white;
+    cursor: pointer;
+    height: 48px;
+}
